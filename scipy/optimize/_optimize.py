@@ -1509,7 +1509,7 @@ def _minimize_bfgs(fun, x0, args=(), jac=None, callback=None,
             warnflag = 2
         
             # Set pk to 1e-6 (or another appropriate value)
-            pk = np.full_like(pk, fill_value=1e-6)
+            pk = np.full_like(pk, fill_value=1e-8)
             
             # Update xk based on the new pk
             xk = xk + pk

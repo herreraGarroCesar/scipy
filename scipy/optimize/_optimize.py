@@ -1507,7 +1507,20 @@ def _minimize_bfgs(fun, x0, args=(), jac=None, callback=None,
         except _LineSearchError:
             # Line search failed to find a better solution.
             warnflag = 2
-            break
+        
+            # Set pk to 1e-6 (or another appropriate value)
+            pk = np.full_like(pk, fill_value=1e-6)
+            
+            # Update xk based on the new pk
+            xk = xk + pk
+            
+            # Recalculate fc and gc based on the updated xk
+            fc, gc = f(xk), myfprime(xk)
+            
+            # Recalculate gfkp1 using the updated gc
+            gfkp1 = gfk + pk * gc
+            
+            continue  # Continue with the next iteration
 
         sk = alpha_k * pk
         xkp1 = xk + sk
